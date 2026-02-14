@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Алтынай ❤️ Нуркен</title>
+
+<style>
+body {
+    margin: 0;
+    background: url(img/IMG_0078.HEIC) no-repeat center center fixed;
+    background-size: cover;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    color: white;
+    text-align: center;
+}
+
+/* Центр */
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Текст */
+h1 { font-size: 40px; color: pink; }
+p { font-size: 20px; }
+
+/* Видео */
+video {
+    width: 300px;
+    border: 3px solid pink;
+    border-radius: 15px;
+}
+
+#muzVideo {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 200px;
+    border: 2px solid pink;
+    border-radius: 10px;
+    z-index: 999;
+}
+
+/* Кнопки */
+button {
+    padding: 12px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin: 10px;
+}
+#yes { background: red; color: white; }
+#no { background: gray; color: white; }
+#no {
+    position: absolute;
+}
+
+/* Чат */
+#chat {
+    margin-top: 20px;
+    font-size: 18px;
+    color: lightgreen;
+}
+
+/* Сердечки */
+.heart {
+    position: fixed;
+    color: red;
+    font-size: 20px;
+    animation: fall linear infinite;
+}
+@keyframes fall {
+    from { top: -10%; }
+    to { top: 110%; }
+}
+
+/* Летающие имена */
+.name {
+    position: fixed;
+    font-size: 24px;
+    color: pink;
+    animation: move 10s linear infinite;
+}
+@keyframes move {
+    0% { transform: translateY(100vh); }
+    100% { transform: translateY(-100vh); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Музыка -->
+<audio id="bgMusic" autoplay loop muted>
+    <source src="img/music.mp3..mp3" type="audio/mpeg">
+</audio>
+<button id="playMusicBtn" style="position:fixed;bottom:20px;right:20px;padding:10px 15px;border-radius:10px;background:pink;border:none;font-size:16px;z-index:1000;">
+🎵 Включить музыку
+</button>
+<div class="container">
+<h1>💖 Алтынай, это для тебя 💖</h1>
+<p>Нуркен приглашает тебя на свидание 14 февраля 🌹</p>
+<!-- Основное видео -->
+<video id="mainVideo" controls>
+    <source src="img/IMG_0993.MOV" type="video/mp4">
+</video>
+<h2>Алтынай, ты пойдёшь со мной на свидание? 💕</h2>
+
+<button id="yes">ДА ❤️</button>
+<button id="no">НЕТ 😢</button>
+
+<div id="chat"></div>
+</div>
+
+<script>
+window.addEventListener("click", function () {
+    const music = document.getElementById("bgMusic");
+    music.muted = false;
+    music.play();
+}, { once: true });
+document.getElementById("playMusicBtn").onclick = function() {
+    const music = document.getElementById("bgMusic");
+    music.muted = false;
+    music.play();
+};
+// Уfunction playMedia() {
+    bgMusic.muted = false;
+    bgMusic.volume = 0.5; // громкость музыки
+    bgMusic.play();
+
+    mainVideo.volume = 0.5; // громкость видео
+    mainVideo.play();
+// ЧАТ
+const noBtn = document.getElementById("no");
+let accepted = false; // нажал ли ДА
+
+document.getElementById("yes").onclick = function() {
+    accepted = true;
+    document.getElementById("chat").innerHTML = "Алтынай: ДА ❤️ Я согласна!";
+
+  // Реакции Нуркена
+  const reactions = [
+      "😭 УРААААААААА!!! Я СЧАСТЛИВ!!!",
+      "💖 Я самый счастливый человек на свете!",
+
+  ];
+
+  let i = 0;
+  const reactionInterval = setInterval(() => {
+      if (i >= reactions.length) {
+          clearInterval(reactionInterval);
+          return;
+      }
+      const msg = document.createElement("div");
+      msg.style.fontSize = "26px";
+      msg.style.color = "yellow";
+      msg.style.marginTop = "10px";
+      msg.innerHTML = reactions[i];
+      document.getElementById("chat").appendChild(msg);
+      i++;
+  }, 1200);
+
+   setInterval(() => {
+    const h = document.createElement("div");
+    h.innerHTML = "❤️";
+    h.style.position = "fixed";
+    h.style.left = Math.random()*100 + "vw";
+    h.style.bottom = "0";
+    h.style.fontSize = "40px";
+    h.style.animation = "fly 3s linear";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),3000);
+}, 100);
+
+const style = document.createElement("style");
+style.innerHTML = `
+@keyframes fly {
+  from { bottom: 0; opacity:1; }
+  to { bottom: 100vh; opacity:0; }
+}`;
+document.head.appendChild(style);
+
+    // Остановить убегание кнопки НЕТ
+    noBtn.removeEventListener("mouseover", moveNoButton);
+    noBtn.removeEventListener("click", moveNoButton);
+};
+
+document.getElementById("no").onclick = function() {
+    document.getElementById("chat").innerHTML = "Алтынай: НЕТ 😢";
+};
+
+// Кнопка "НЕТ" убегает
+let side = true; // запоминаем сторону
+function moveNoButton() {
+    if (accepted) return; // если ДА нажато, больше не убегает
+    const maxX = window.innerWidth - 150;
+    const maxY = window.innerHeight - 80;
+    let x, y;
+
+    if (side) {
+        // левая сторона
+        x = Math.random() * (maxX / 2);
+    } else {
+        // правая сторона
+        x = (maxX / 2) + Math.random() * (maxX / 2);
+    }
+
+    // случайная высота
+    y = Math.random() * maxY;
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+
+    side = !side; // меняем сторону каждый раз
+}
+
+// Убегает при наведении
+noBtn.addEventListener("mouseover", moveNoButton);
+// И при попытке нажать
+noBtn.addEventListener("click", moveNoButton);
+
+// Сердечки
+function createHeart() {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerHTML = "💖";
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.animationDuration = (Math.random()*3+2)+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),5000);
+}
+setInterval(createHeart, 200);
+
+// Летающие имена
+function createName(text) {
+    const n = document.createElement("div");
+    n.className = "name";
+    n.innerHTML = text;
+    n.style.left = Math.random() * 100 + "vw";
+    n.style.animationDuration = (Math.random()*10+5)+"s";
+    document.body.appendChild(n);
+    setTimeout(()=>n.remove(),15000);
+}
+setInterval(()=>createName("💖Ты мне нравишься💖"), 1000);
+</script>
+
+</body>
+</html>
